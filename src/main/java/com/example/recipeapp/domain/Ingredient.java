@@ -22,6 +22,4 @@ public class Ingredient {
     @ManyToOne()
     private Recipe recipe;
 
-    public Ingredient(String ripe_avocados, BigDecimal bigDecimal, UnitOfMeasure eachUom) {
-    }
 }
