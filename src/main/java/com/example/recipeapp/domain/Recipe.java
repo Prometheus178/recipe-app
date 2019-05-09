@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,19 +23,25 @@ public class Recipe {
     private String source;
     private String url;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
+
+    // String has 255 character's limit.
     @Lob
-    private Byte[] image;
+    private String directions;
+
     @Enumerated(value = EnumType.STRING)
     private Difficulty difficulty;
-    private String directions;
+
+    @Lob
+    private Byte[] image;
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+
     @ManyToMany
     @JoinTable(name = "recipe_category", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
-    public Recipe addIngredient(Ingredient ingredient) {
+    public Recipe addIngredient(Ingredient ingredient){
         ingredient.setRecipe(this);
         this.ingredients.add(ingredient);
         return this;
